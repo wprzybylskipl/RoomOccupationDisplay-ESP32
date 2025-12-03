@@ -1,7 +1,7 @@
 # RoomOccupationDisplay-ESP32
-This projest uses a Freenove ESP32 touch disaly 4inch to present room bookings pulled from Google calendar
+This project uses a Freenove ESP32 touch display 4inch to present room bookings pulled from Google calendar
 
-# Featrures 
+# Features 
 
 # Setup
 1. Set up wifi credentials: WIFI_SSID and WIFI_PASS
@@ -10,6 +10,6 @@ This projest uses a Freenove ESP32 touch disaly 4inch to present room bookings p
    
 
 # Additonal resources
-You can refre to this sources for more details:
+You can refer to this sources for more details:
 - tutorial: https://docs.freenove.com/projects/fnk0103/en/latest/fnk0103/codes/tutorial.html
-- 3d printing encousure: https://www.thingiverse.com/thing:7166648 
+- 3d printing enclousure: https://www.thingiverse.com/thing:7166648 
