@@ -3,7 +3,7 @@ This project uses the Freenove ESP32-32E board with a 4-inch touch display (320x
 
 # Features 
 - LIVE Status: Presents the current room status (Free/Busy) and indicates when the room will be free ([ BUSY / FREE FROM HH:MM ]).
-- Header: Displays the conference room name (e.g., A-101 – SMART4AVIATION).
+- Header: Displays the conference room name (e.g., A-101 – COMPANY NAME).
 - Event List: Shows a scrollable list of reservations for the selected day.
 - Navigation: Allows browsing events for the previous, current, and next days via touch buttons (PREV, TODAY, NEXT).
 - Stability: Implements mechanisms for maintaining Wi-Fi connectivity and Network Time Protocol (NTP) synchronization for robust operation.
