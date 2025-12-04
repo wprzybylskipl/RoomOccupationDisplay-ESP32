@@ -51,7 +51,16 @@ Ensure you have completed the configuration steps for TFT_eSPI (Section 3) and u
 5. If you need to reconfigure the device connect to the same network as the device and go to URL (form bottom of the screen).
 
 Default user and password for admin panel is admin/Conferentio
-   
+
+## Fotos of ready project
+
+![Board](foto/Board.jpg)
+![Connecting WiFi](foto/Conneting_WIFI.jpg)
+![Downloading ICS](foto/Downloading_ICS.jpg)
+![Ready display](foto/Ready display.jpg)
+![Setup mode](foto/SetupMode.jpg)
+![Ready display](foto/Ready%20display.jpg)
+
 
 # Additonal resources
 You can refer to this sources for more details:
