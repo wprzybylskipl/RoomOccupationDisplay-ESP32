@@ -47,6 +47,10 @@ Ensure you have completed the configuration steps for TFT_eSPI (Section 3) and u
 1. In the Arduino IDE, select the correct board (e.g., ESP32 Dev Module).
 2. Compile and upload the sketch to the ESP32 board.
 3. The Serial Monitor (set to 115200 baud) will display the connection, time sync, and data download progress.
+4. Once you upload the code start up the device and follow the screen instructions. In short the device will setup an Access Point something like: ROOM-SETUP-someid. Connect to this newtwork and in your broswer go to IP from the screen. You will see a setup page where you can put WIFI credentials and ICS link. Click save and reboot. The device will startup and wil be ready to work.
+5. If you need to reconfigure the device connect to the same network as the device and go to URL (form bottom of the screen).
+
+Default user and password for admin panel is admin/Conferentio
    
 
 # Additonal resources
