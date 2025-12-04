@@ -27,20 +27,20 @@ Install the following libraries using the Arduino Library Manager:
 The TFT_eSPI library must be configured to match the specific Freenove hardware pins. Since this library is installed locally, you must provide instructions for the user to edit their library files.
 1. Locate: Find the User_Setup.h file (or the file currently selected in User_Setup_Select.h) within your local TFT_eSPI library folder (e.g., Documents/Arduino/libraries/TFT_eSPI/).
 2. Verify/Edit Settings: Ensure the following required lines are uncommented or correctly defined to match the ST7796 display and the Freenove ESP32-32E pinout:
-   Setting        Required Value / Definition
-   Driver          #define ST7796_DRIVER
-   Dimensions      #define TFT_WIDTH 320, #define TFT_HEIGHT 480
-   Color Order     #define TFT_RGB_ORDER TFT_BGR
-   SPI Pins        e.g., #define TFT_MISO 12, #define TFT_MOSI 13, etc.
-   Touch Pins      e.g., #define TOUCH_CS 33, #define TOUCH_IRQ 36
+   - Setting        Required Value / Definition
+   - Driver          #define ST7796_DRIVER
+   - Dimensions      #define TFT_WIDTH 320, #define TFT_HEIGHT 480
+   - Color Order     #define TFT_RGB_ORDER TFT_BGR
+   - SPI Pins        e.g., #define TFT_MISO 12, #define TFT_MOSI 13, etc.
+   - Touch Pins      e.g., #define TOUCH_CS 33, #define TOUCH_IRQ 36
 
-##Project Configuration (Code)
+## Project Configuration (Code)
 Open the main .ino file and modify the CONFIG section before compiling:
-   Constant            DescriptionExample Value   
-   WIFI_SSID1            Primary Wi-Fi Network Name"Your_Network_1"
-   WIFI_PASS1            Primary Wi-Fi Password"Your_Password_1"
-   ICS_URL               Public URL for Google Calendar ICS data."https://calendar.google.com/calendar/ical/..."
-   ROOM_NAME             Name displayed in the header."A-101 – Your Company Name"
+   - Constant            DescriptionExample Value   
+   - WIFI_SSID1            Primary Wi-Fi Network Name"Your_Network_1"
+   - WIFI_PASS1            Primary Wi-Fi Password"Your_Password_1"
+   - ICS_URL               Public URL for Google Calendar ICS data."https://calendar.google.com/calendar/ical/..."
+   - ROOM_NAME             Name displayed in the header."A-101 – Your Company Name"
 
 ## Getting Started
 Ensure you have completed the configuration steps for TFT_eSPI (Section 3) and updated the CONFIG variables (Section 4).
