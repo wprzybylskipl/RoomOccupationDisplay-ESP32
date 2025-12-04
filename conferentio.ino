@@ -9,7 +9,6 @@ using fs::FS;
 #include <time.h>
 
 // ================== CONFIG (DEFAULTS) ==================
-// Defaults tylko jako PODPOWIEDŹ do formularza (nie wymuszają auto-connect)
 const char* DEFAULT_WIFI_SSID1 = "Network SSID";
 const char* DEFAULT_WIFI_PASS1 = "Password";
 
@@ -31,10 +30,10 @@ TFT_eSPI tft = TFT_eSPI();
 WebServer web(80);
 Preferences prefs;
 
-bool isConfigured = false;   // flaga w NVS: czy urządzenie jest już skonfigurowane
-bool setupMode    = false;   // czy aktualnie działamy w trybie AP/SETUP
-String apSsid;               // SSID AP w setup mode
-const char* AP_PASS = "roomsetup";  // hasło do AP w setup mode
+bool isConfigured = false;   // flaga in NVS: is the device configured?
+bool setupMode    = false;   // mode:  AP/SETUP
+String apSsid;               // SSID AP in setup mode
+const char* AP_PASS = "roomsetup";  // AP pass in setup mode
 
 // ---------- COLOR THEME (light) ----------
 const uint16_t COLOR_BG             = TFT_WHITE;
@@ -51,7 +50,6 @@ const uint16_t COLOR_BUTTON_TEXT    = TFT_NAVY;
 const uint16_t COLOR_ERROR_TEXT     = TFT_RED;
 
 // ================== LAYOUT ==================
-// (Twoje ostatnie wartości – nie ruszam)
 const int TIME_BAR_H    = 16;
 const int IP_BAR_H      = 18;
 
@@ -103,7 +101,6 @@ unsigned long lastRefresh = 0;
 void loadConfig() {
   prefs.begin("crdisp", true); // read-only
 
-  // Nowe odczyty: domyślnie PUSTE stringi
   cfg.wifi1    = prefs.getString("wifi1", "");
   cfg.pass1    = prefs.getString("pass1", "");
   cfg.wifi2    = prefs.getString("wifi2", "");
@@ -113,7 +110,6 @@ void loadConfig() {
 
   isConfigured = prefs.getBool("configured", false);
 
-  // Migracja ze starej wersji: jeśli było zapisane WiFi, ale nie ma flagi, traktuj jako skonfigurowane
   if (!isConfigured && cfg.wifi1.length() > 0) {
     isConfigured = true;
   }
@@ -1042,7 +1038,7 @@ String htmlPage() {
 }
 
 void setupWeb() {
-  // STRONA GŁÓWNA
+  // MAIN PAGE
   web.on("/", HTTP_GET, []() {
     if (!web.authenticate(cfg.webUser.c_str(), cfg.webPass.c_str())) {
       return web.requestAuthentication();
@@ -1050,7 +1046,7 @@ void setupWeb() {
     web.send(200, "text/html", htmlPage());
   });
 
-  // ZAPIS KONFIGU
+  // SAVE CONFIG
   web.on("/save", HTTP_POST, []() {
     if (!web.authenticate(cfg.webUser.c_str(), cfg.webPass.c_str())) {
       return web.requestAuthentication();
@@ -1105,7 +1101,6 @@ void startSetupMode() {
   WiFi.disconnect(true);
 
   uint64_t chipid = ESP.getEfuseMac();
-  // trochę skrócony ID do SSID
   apSsid = "ROOM-SETUP-" + String((uint32_t)(chipid & 0xFFFFFF), HEX);
 
   WiFi.softAP(apSsid.c_str(), AP_PASS);
@@ -1118,27 +1113,42 @@ void startSetupMode() {
   Serial.print("AP IP: ");
   Serial.println(ip);
 
-  // Ekran instrukcji
+  // INstructions 
   tft.fillScreen(COLOR_BG);
   tft.setTextColor(COLOR_TEXT, COLOR_BG);
   tft.setTextSize(1);
 
   int y = 10;
-  tft.drawCentreString("SETUP MODE", tft.width()/2, y, 3); y += 24;
+
+  // Header 
+  tft.drawCentreString("SETUP MODE", tft.width()/2, y, 4);  
+  y += tft.fontHeight(4) + 10;
+
+  // Instructions
   tft.setTextColor(COLOR_SUBHEADER, COLOR_BG);
 
-  tft.drawCentreString("1) Connect WiFi:", tft.width()/2, y, 3); y += 12;
-  tft.drawCentreString(apSsid,         tft.width()/2, y, 1); y += 12;
-  tft.drawCentreString(String("Pass: ") + AP_PASS, tft.width()/2, y, 3); y += 16;
+  tft.drawCentreString("1) Connect WiFi:", tft.width()/2, y, 2);
+  y += tft.fontHeight(2) + 6;
 
-  tft.drawCentreString("2) Open in browser:", tft.width()/2, y, 3); y += 12;
+  tft.drawCentreString(apSsid, tft.width()/2, y, 2);
+  y += tft.fontHeight(2) + 6;
+
+  tft.drawCentreString(String("Pass: ") + AP_PASS, tft.width()/2, y, 2);
+  y += tft.fontHeight(2) + 10;
+
+  tft.drawCentreString("2) Open in browser:", tft.width()/2, y, 2);
+  y += tft.fontHeight(2) + 6;
+
   String ipStr = ip.toString();
-  tft.drawCentreString(ipStr, tft.width()/2, y, 3); y += 16;
+  tft.drawCentreString(ipStr, tft.width()/2, y, 2);
+  y += tft.fontHeight(2) + 10;
 
-  String loginInfo = "3) Login: " + cfg.webUser + " / " + cfg.webPass;
-  tft.drawCentreString(loginInfo.c_str(), tft.width()/2, y, 3);
+  // Login info 
+  String loginInfo = "3) Login: admin / Conferentio";
+  tft.drawCentreString(loginInfo, tft.width()/2, y, 2);
 
-  setupWeb();  // WWW już tylko po AP
+
+  setupWeb(); 
 }
 
 void factoryReset() {
@@ -1161,13 +1171,13 @@ void setup() {
   // Load config from NVS
   loadConfig();
 
-  // Jeśli nie skonfigurowane → SETUP MODE (AP)
+  // If nto configured → SETUP MODE (AP)
   if (!isConfigured || cfg.wifi1.length() == 0) {
     startSetupMode();
     return;
   }
 
-  // Normalny tryb pracy
+  // Normal mode
   drawStatus("Connecting WiFi...");
   if (!connectWiFi()) {
     lastError = "WiFi config failed";
